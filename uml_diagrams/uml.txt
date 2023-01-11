@@ -1,0 +1,295 @@
+@startuml
+
+class "Game" as Game #aliceblue;line:blue;text:blue;line.bold{
+    + Skin : skinDefault
+    + Skin : skinCustom
+    + arena : Arena
+
+    + create() : void
+    + render() : void
+    + dispose() : void
+}
+
+package "Screen" as Screen #EEEEEE {
+
+class "MainMenuScreen" as MainMenuScreen #lightblue;line:green;line.bold {
+    - TankStarsGame : Game
+    - stage : Stage
+    - table : Table
+
+    - buttonNext : TextButton
+    - buttonBack : TextButton
+
+    - tankSelectA : SelectBox<String>
+    - tankSelectB : SelectBox<String>
+
+    - tankCoalitionA : SpriteDrawable
+    - tankHeliosA : SpriteDrawable
+    - tankMark1A : SpriteDrawable
+    - tankCoalitionB : SpriteDrawable
+    - tankHeliosB : SpriteDrawable
+    - tankMark1B : SpriteDrawable
+    
+    - player1Name : TextField
+    - player2Name : TextField
+
+    + MainMenuScreen(TankStarsGame Game)
+    + render() : void
+    + dispose() : void
+}
+
+class "InGameMenuScreen" as InGameMenuScreen #lightblue;line:green;line.bold{
+    - TankStarsGame : Game
+    - gameState : GameState
+    - stage : Stage
+    - table : Table
+
+    + InGameMenuScreen(TankStarsGame Game)
+    + render() : void
+    + dispose() : void
+}
+
+class "NewGameSetupScreen" as NewGameSetupScreen #lightblue;line:green;line.bold{
+    - TankStarsGame : Game
+    - stage : Stage
+    - table : Table
+    - buttonNext : TextButton
+    - buttonBack : TextButton
+
+    + NewGameSetupScreen(TankStarsGame Game)
+    + render() : void
+    + dispose() : void
+}
+
+class "LoadGameScreen" as LoadGameScreen #lightblue;line:green;line.bold{
+    - TankStarsGame : game
+    - Stage : stage
+
+    - savedGames : List<Arena>
+    - loadGame(Arena arena) : void
+}
+
+class "GameScreen" as GameScreen #lightblue;line:green;line.bold{
+    - stage : Stage
+    - root : Table
+    - terrain : Terrain
+
+    - healthPlayerA : ProgressBar
+    - healthPlayerB : ProgressBar
+    - pauseButton : TextButton
+    - fireButton : TextButton
+    - angleSlider : Slider
+    - powerSlider : Slider
+
+    + create() : void
+    + render() : void
+    + dispose() : void
+}
+
+}
+
+class "Player" as Player <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - name : String
+
+    + createTank(String name) : void
+    + play() : void
+}
+
+abstract "Tank" as Tank <<Serializable>> #pink;line:red;line.bold;text:black{
+    - fuel : Integer
+    - health : Integer
+    - position : Position
+    - angle : Double
+    - impulse : Integer
+    - mass : Integer
+    - weapons : ArrayList
+
+    - fire() : void
+
+    + getHealth() : Integer
+    + getPosition() : Position
+    + getAngle() : Double
+    + getWeapons() : ArrayList
+    + getFuel() : Integer
+
+    + setHealth()
+    + setPosition()
+    + setAngle()
+    + setWeapons()
+    + setFuel()
+}
+
+class "tankCoalition" as tankCoalition <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - tankImage : SpriteBatch
+
+    + fire() : void
+    + create() : void
+    + render() : void  
+    + dispose() : void
+    + actDamage() : void 
+    + actShoot() : void
+}
+
+class "tankHelios" as tankHelios <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - tankImage : SpriteBatch
+
+    + fire() : void
+    + create() : void
+    + render() : void
+    + dispose() : void
+    + actDamage() : void 
+    + actShoot() : void
+
+}
+
+class "tankMarkOne" as tankMarkOne <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    + tankImage : SpriteBatch
+
+    + fire() : void
+    + create() : void
+    + render() : void
+    + dispose() : void
+    + actDamage() : void 
+    + actShoot() : void
+
+}
+
+class "Terrain" as Terrain <<Serializable>> #aliceblue;line:blue;text:blue;line.bold {
+    - coordinates : Vector[]
+    - chainShape : ChainShape
+    - renderer : Box2DRenderer
+    - texture : Texture
+}
+
+
+interface "Weapon" as Weapon <<Serializable>> #palegreen;text:black;line.bold;line:green {
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponBigOne" as WeaponBigOne <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponShotgun" as WeaponShotgun <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponVerticalSlam" as WeaponVerticalSlam <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponVolley" as WeaponVolley <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponF1Grenade" as WeaponF1Grenade <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+class "WeaponSplitterChain" as WeaponSplitterChain <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - damage : Integer
+    - radius : Double
+    - mass : Integer
+
+    + getDamage() : Integer
+    + getRadius() : Double
+    + getMass() : Integer
+    + getTrajectory : Vector2d[]
+}
+
+
+class "Arena" as Arena <<Serializable>> #aliceblue;line:blue;text:blue;line.bold{
+    - PlayerA : Player
+    - PlayerB : Player
+    - terrain : Terrain
+    - airdrop : Airdrop
+
+    + getPlayerA() : Player
+    + getPlayerB() : Player
+    + getTerrain() : Terrain
+
+    + setPlayerA(Player player)
+    + setPlayerB(Player player)
+    + setTerrain(Terrain terrain)
+
+    + spawnAirdrop() : void
+}
+
+class "Airdrop" as Airdrop #aliceblue;line:blue;text:blue;line.bold{
+    - duration : Integer
+    - weapon : Weapon
+}
+
+Weapon <.. WeaponShotgun
+Weapon <.. WeaponBigOne
+Weapon <.. WeaponVolley
+Weapon <.. WeaponVerticalSlam
+Weapon <.. WeaponF1Grenade
+Weapon <.. WeaponSplitterChain
+
+Tank " 1 " *-- " 1..*" Weapon
+Player " 1 " *-- " 1" Tank
+
+Game " 1" *-- " 1" Arena
+Arena " 1" *-- " 1" Terrain
+Arena " 1" *-- " 2" Player
+Arena " 1" *-- " 1" Airdrop
+Airdrop <.. Weapon
+
+Tank <|-- tankCoalition
+Tank <|-- tankHelios
+Tank <|-- tankMarkOne
+
+Game <-- MainMenuScreen
+Game <-- InGameMenuScreen
+Game <-- NewGameSetupScreen
+Game <-- LoadGameScreen
+Game <-- GameScreen
+
+Tank -[hidden]> Weapon
+Weapon -[hidden]> WeaponVolley
+Weapon -[hidden]> WeaponSplitterChain
+Weapon -[hidden]> WeaponF1Grenade
+Weapon -[hidden]> WeaponShotgun
+Weapon -[hidden]> WeaponVerticalSlam
+Game -[hidden]> Arena
+
+@enduml
